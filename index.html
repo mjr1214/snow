@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<style>
+	#canvas{
+		background:#111;
+	}
+</style>
+<body>
+<canvas id="canvas"></canvas>
+<script>
+	function xuehua(){
+		// /获取浏览器的宽度/ 
+	var w=window.innerWidth;
+	// 获取浏览器的高度
+	var h=window.innerHeight
+	// 获取画布
+	var can=document.getElementById('canvas');
+	// 转为2d场景
+	var cxt=can.getContext("2d");
+	// 浏览器的宽给了画布
+	can.width=w;
+	// 浏览器的高给了画布
+	can.height=h;
+	// 声明雪花有100个
+	var snow=100;
+	// 声明雪花的坐标以及半径
+	var x,y,r
+	// 声明数组用来存放雪花的信息
+	var arr=[]
+	// 对100个雪花进行循环
+	for(var i=0;i<snow;i++){
+		// 将每一个雪花的坐标放入数组
+		arr.push({
+			// 把雪花的横坐标设置为随机数
+			x:Math.random()*w,
+			y:Math.random()*h,
+			r:Math.random()*2+1,
+		})
+		// 每循环一次就会将雪花的信息放入一次
+	}
+	// 绘制雪花函数
+    function drawSnow(){
+    	// 每画完一次要清除一次画布，否则的话当第二个雪花出现，改变横纵坐标的时候，会沿着第一个雪花的基础上进行改变。
+    	cxt.clearRect(0,0,w,h)
+    	// 设置画笔的颜色为白色
+    	cxt.fillStyle="#fff";
+    	// 声明要开始画
+    	cxt.beginPath()
+    	// 循环雪花，
+    	for(var i=0;i<snow;i++){
+    		// 拿到数组中的每一个雪花的信息
+    		var p=arr[i];
+    		// 将画笔移动到圆心的位置
+    		cxt.moveTo(p.x,p.y);
+    		// 画雪花的形状
+    		cxt.arc(p.x,p.y,p.r,0,Math.PI*2);
+    	}
+    	cxt.closePath()
+    	// 画笔结束
+    	cxt.fill()
+    	// 完成画画
+    	// 在绘制结束后定用drownup,改变雪花位置，然后执行上边循环继续画雪花。
+    	drowup()
+    }
+    // 调用drawSnow函数（执行函数里的代码）
+    drawSnow();
+    // 雪花飘落函数
+    function drowup(){
+    	// 循环雪花数量
+    	for(var i=0;i<snow;i++){
+    		// 拿到数组中雪花的每个信息
+    		var p=arr[i];
+    		// 改变每一个雪花的横坐标
+    		p.x += Math.random()+1
+    		// 改变每一个雪花的纵坐标
+    		p.y += Math.random()+3
+    		// 判断如果雪花的横坐标大于浏览器的宽度的时候让它等于0，继续从左上角开始画
+    		if(p.x>w){
+    			p.x=0
+    		}
+    		// 同上  纵坐标 高度
+    		if(p.y>h){
+    			p.y=0
+    		}
+    	}
+    }
+    // 执行时间函数，每20秒调用一次绘制雪花函数
+    setInterval(drawSnow,20)
+	}
+    xuehua()
+</script>
+</body>
+
+</html>
